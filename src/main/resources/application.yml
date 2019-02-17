@@ -1,0 +1,35 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: get-way
+#zuul:
+#  routes:
+#    books:
+#      url:http://localhost:8090
+#
+#ribbon:
+#  eureka:
+#    enabled:false
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://root:12345qwert@${spring.cloud.client.ipAddress}:8761/eureka
+    registerWithEureka: true
+    fetchRegistry: true
+  instance:
+    lease-renewal-interval-in-seconds: 2 # 设置心跳的时间间隔（默认是30秒）
+    lease-expiration-duration-in-seconds: 5 # 如果现在超过了5秒的间隔（默认是90秒）
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}
+    appname: get-way
+
+zuul:
+#  ignoredServices: '*'
+  routes:
+#    users: /myusers/**
+    users:
+        path: /common-provider/**
+        serviceId: common-provider
+#        url: https://www.baidu.com
